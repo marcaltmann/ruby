@@ -101,4 +101,28 @@ RSpec.describe 'classes' do
     director.surname = "Wayne"
     expect(director.surname).to eq("Wayne")
   end
+
+  it 'can be inherited' do
+    class Publication
+      attr_accessor :year
+    end
+
+    class Magazine < Publication
+      attr_accessor :name
+    end
+
+    expect(Publication.superclass).to eq(Object)
+    expect(Magazine.superclass).to eq(Publication)
+
+    expect(Publication.class).to eq(Class)
+    expect(Object.class).to eq(Class)
+    expect(Class.class).to eq(Class)
+
+    deutsch = Magazine.new
+    deutsch.name = "Deutsch perfekt"
+    deutsch.year = 2019
+
+    expect(deutsch.name).to eq("Deutsch perfekt")
+    expect(deutsch.year).to eq(2019)
+  end
 end
