@@ -57,4 +57,31 @@ RSpec.describe 'Enumerators' do
     e.rewind
     expect(e.next).to eq(1)
   end
+
+  it 'encryption example' do
+    class String
+      def ^(key)
+        kenum = key.each_byte.cycle  # Why can they be chained like this?
+        each_byte
+          .map { |byte| byte ^ kenum.next }
+          .pack('C*')
+          .force_encoding(self.encoding)
+      end
+    end
+
+    str = "Hello world!"
+    key = 'secret!'
+    encrypted = str ^ key
+    result = encrypted ^ key
+
+    expect(result).to eq(str)
+  end
+
+  it 'works lazily' do
+    my_enum = (1..Float::INFINITY).lazy.select { |n| n % 3 == 0 }
+
+    result = my_enum.take(5).force
+
+    expect(result).to eq([3, 6, 9, 12, 15])
+  end
 end
