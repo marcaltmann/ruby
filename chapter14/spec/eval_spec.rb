@@ -19,4 +19,55 @@ RSpec.describe 'eval' do
 
     expect(str.tainted?).to be_falsy
   end
+
+  it 'instance_eval' do
+    class Person
+      def initialize(name)
+        @name = name
+      end
+    end
+    p = Person.new("Gandhi")
+
+    result = p.instance_eval { @name }
+
+    expect(result).to eq("Gandhi")
+  end
+
+  it 'creating a dsl with instance_eval' do
+    class Person
+      def initialize(&block)
+        instance_eval(&block)
+      end
+
+      def forename(forename = nil)
+        @forename ||= forename
+      end
+
+      def surname(surname = nil)
+        @surname ||= surname
+      end
+    end
+
+    p = Person.new do
+      forename "Marc"
+      surname "Altmann"
+    end
+
+    expect(p.forename).to eq("Marc")
+    expect(p.surname).to eq("Altmann")
+  end
+
+  it 'class_eval' do
+    class Person
+      def initialize(name)
+        @name = name
+      end
+    end
+
+    Person.class_eval { def name; @name; end  }
+
+    p = Person.new("Marc")
+
+    expect(p.name).to eq("Marc")
+  end
 end
