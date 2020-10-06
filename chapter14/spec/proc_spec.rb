@@ -22,7 +22,7 @@ RSpec.describe 'Proc objects' do
 
   it 'code block the normal way with yield' do
     def execute_block
-      return yield
+      yield
     end
 
     result = execute_block { 5 }
@@ -32,7 +32,7 @@ RSpec.describe 'Proc objects' do
 
   it 'code block captured with & and called' do
     def execute_block(&block)
-      return block.call
+      block.call
     end
 
     result = execute_block { 5 }
