@@ -33,6 +33,10 @@ RSpec.describe 'method_missing and company' do
         @names.public_send(method, *args, &block)
       end
 
+      def respond_to_missing?(method, include_private = false)
+        true
+      end
+
       def names
         @names
       end
@@ -45,5 +49,6 @@ RSpec.describe 'method_missing and company' do
     p << "Thornton"
 
     expect(p.names).to eq(["Roger", "O.", "Thornton"])
+    expect(p.respond_to?(:<<)).to be_truthy
   end
 end
